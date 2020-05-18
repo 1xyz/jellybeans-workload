@@ -21,14 +21,14 @@ func init() {
 }
 
 func main() {
-	usage := `usage: jbworkload [--version] [--help] <command> [<args>...]
+	usage := `usage: jellybeans-workload [--version] [--help] <command> [<args>...]
 options:
    -h, --help
    --verbose      Change the logging level verbosity
 The commands are:
    consumer   Run a consumer workload
    producer   Run a producer workload
-See 'jbworkload <command> --help' for more information on a specific command.
+See 'jellybeans-workload <command> --help' for more information on a specific command.
 `
 	parser := &docopt.Parser{OptionsFirst: true}
 	args, err := parser.ParseArgs(usage, nil, version)

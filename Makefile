@@ -1,12 +1,16 @@
 GO=go
 GOFMT=gofmt
 DELETE=rm
-BINARY=jbworkload
+BINARY=jellybeans-workload
 BUILD_BINARY=bin/$(BINARY)
+DOCKER=docker
+DOCKER_REPO=1xyz/jellybeans-workload
 # go source files, ignore vendor directory
 SRC = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
-# current git version short-hash
+BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+SAFE_BRANCH = $(subst /,-,$(BRANCH))
 VER = $(shell git rev-parse --short HEAD)
+DOCKER_TAG = "$(SAFE_BRANCH)-$(VER)"
 
 info:
 	@echo " target         ⾖ Description.                                    "
@@ -18,6 +22,8 @@ info:
 	@echo " release/darwin generate a darwin target build                     "
 	@echo " release/linux  generate a linux target build                      "
 	@echo " tidy           clean up go module file                            "
+	@echo " docker-build        build image $(DOCKER_REPO):$(DOCKER_TAG)      "
+	@echo " docker-push         push image $(DOCKER_REPO):$(DOCKER_TAG)       "
 	@echo
 	@echo " ------------------------------------------------------------------"
 
@@ -44,3 +50,9 @@ release/%: clean fmt
 .PHONY: tidy
 tidy:
 	$(GO) mod tidy
+
+docker-build:
+	$(DOCKER) build -t $(DOCKER_REPO):$(DOCKER_TAG) -f Dockerfile .
+
+docker-push: docker-build
+	$(DOCKER) push $(DOCKER_REPO):$(DOCKER_TAG)
