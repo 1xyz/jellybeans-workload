@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/1xyz/jellybeans-workload/workload"
 	"github.com/docopt/docopt-go"
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 const (
@@ -15,7 +16,7 @@ const (
 )
 
 func init() {
-	log.SetFormatter(&log.TextFormatter{})
+	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.InfoLevel)
 }
